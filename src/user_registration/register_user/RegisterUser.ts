@@ -67,7 +67,8 @@ export async function saveUser(userRegistered: User): Promise<UserRegistered> {
                 { key: 'username', value: userRegistered.username },
                 { key: 'email', value: userRegistered.email },
                 { key: 'domain', value: 'registration' },
-                { key: 'userId', value: userRegistered.id }
+                { key: 'userId', value: userRegistered.id },
+                { key: 'eventType', value: 'UserRegistered' }
             ]
         });
 
