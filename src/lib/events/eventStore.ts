@@ -1,5 +1,10 @@
 import { v7 as uuidv7 } from 'uuid';
 
+/**
+ * Note that this is a simple in-memory event store for demo purposes.
+ * In a production environment, you would use a more persistent store such as Postgres,
+ * and a reliable subscription system to process events.
+ */
 export interface Tag {
     key: string;
     value: string;

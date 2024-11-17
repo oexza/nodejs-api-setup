@@ -2,7 +2,11 @@ import { eventStore, TagGroup } from '../lib/events/eventStore.js';
 import nodemailer from 'nodemailer';
 import { v7 as uuidv7 } from 'uuid';
 
-//note that this is for demo purposes, and may not send an actual email.
+/**
+ * Note that this is for demo purposes, and may not send an actual email.
+ * In this demo an event will be processed every 5 seconds and will be processed more than once which is not ideal.
+ * Suffice to say this is just a demo implementation
+ */
 
 // For development, use ethereal.email
 const transporter = nodemailer.createTransport({
