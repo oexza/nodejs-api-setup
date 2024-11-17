@@ -1,6 +1,6 @@
 # Splice test Service
 
-A simple user registration and authentication service built with Hono, TypeScript, and Event Sourcing.
+A simple user registration and authentication service built with Hono, TypeScript, and Postgres. The application uses a vertical slice architecture. Vertical slices are a pattern for organizing code into modules that correspond to the slices of the user stories. This allows for a more modular and maintainable codebase, and allows for more flexibility in the future. The project uses events as a form of integration. This allows for a more decoupled architecture, and scalability. Note that this is a demo application and may not be production ready, it is designed to convey the idea of a vertical slice architecture and event driven architecture.
 
 ## Features
 
@@ -24,7 +24,7 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-cd user-service
+cd splice-test-service
 ```
 
 Install dependencies:
@@ -53,7 +53,7 @@ The application expects the following environment variables for database connect
 
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
-POSTGRES_DB=user_service
+POSTGRES_DB=splice_test_service
 POSTGRES_USER=your_username
 POSTGRES_PASSWORD=your_password
 
