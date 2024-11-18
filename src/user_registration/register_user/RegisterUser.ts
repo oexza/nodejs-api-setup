@@ -31,7 +31,7 @@ type User = z.infer<typeof userRegisteredSchema>;
 
 type GetExistingUser = (username: string, email: string) => Promise<{ username: string, email: string } | null>;
 type SaveUser = (user: UserRegistered) => Promise<UserRegistered>;
-
+type PasswordHasher = (password: string) => Promise<string>;
 export async function getExistingUserByEmailOrUsername(username: string, email: string): Promise<{ username: string, email: string } | null> {
     const client = await pool.connect();
 
@@ -82,12 +82,18 @@ export async function saveUser(userRegistered: User): Promise<UserRegistered> {
     }
 }
 
-interface RegisterUserInput {
-    getExistingUserByEmailOrUsername: GetExistingUser,
-    saveUser: SaveUser
+export async function hashPassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
 }
 
-export async function handle(command: RegisterUser, { getExistingUserByEmailOrUsername, saveUser }: RegisterUserInput): Promise<UserRegistered> {
+interface RegisterUserInput {
+    getExistingUserByEmailOrUsername: GetExistingUser,
+    saveUser: SaveUser,
+    passwordHasher: PasswordHasher
+}
+
+export async function handle(command: RegisterUser, { getExistingUserByEmailOrUsername, saveUser, passwordHasher }: RegisterUserInput): Promise<UserRegistered> {
     const existingUser = await getExistingUserByEmailOrUsername(command.username, command.email);
 
     if (existingUser) {
@@ -98,8 +104,7 @@ export async function handle(command: RegisterUser, { getExistingUserByEmailOrUs
         );
     }
 
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(command.password, saltRounds);
+    const passwordHash = await passwordHasher(command.password);
 
     return await saveUser({
         id: uuidv7(),

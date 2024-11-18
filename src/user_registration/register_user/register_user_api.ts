@@ -1,6 +1,6 @@
 import { createRoute, z } from '@hono/zod-openapi';
 import type { Context } from "node:vm";
-import { registerUserSchema } from './RegisterUser.js';
+import { hashPassword, registerUserSchema } from './RegisterUser.js';
 import { handle, getExistingUserByEmailOrUsername, saveUser } from './RegisterUser.js';
 
 
@@ -55,7 +55,7 @@ export const registerRouteHandler = async (c: Context) => {
     try {
         const command = await c.req.json();
         const validated = registerUserSchema.parse(command);
-        const result = await handle(validated, { getExistingUserByEmailOrUsername, saveUser });
+        const result = await handle(validated, { getExistingUserByEmailOrUsername, saveUser, passwordHasher: hashPassword });
 
         const response = successResponseSchema.parse({
             id: result.id,
